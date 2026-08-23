@@ -399,7 +399,7 @@ footer{background:var(--black);border-top:1px solid var(--line);padding:56px 40p
       <li class="reveal reveal-d3">Clubs from 6+ major European leagues <div class="check-dot">✓</div></li>
       <li class="reveal reveal-d4">Fast shipping across the UAE <div class="check-dot">✓</div></li>
     </ul>
-    <a href="https://kitsparkdxb.net" target="_blank" class="btn-primary reveal" style="align-self:flex-start">Shop the full range</a>
+    <a href="https://kitspark-dxb.myshopify.com" target="_blank" class="btn-primary reveal" style="align-self:flex-start">Shop the full range</a>
   </div>
 </div>
 
@@ -522,93 +522,12 @@ document.addEventListener('click',e=>{
 });
 
 
-/* ── PRODUCT MODAL ── */
 function openProduct(handle) {
   if (!handle) return;
-  const p = allProducts.find(x => x.handle === handle);
-  if (!p) { window.open('https://kitspark-dxb.myshopify.com/products/' + handle, '_blank'); return; }
-  
-  const sizes = ['S','M','L','XL','XXL'];
-  const modal = document.createElement('div');
-  modal.id = 'productModal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeInModal 0.25s ease';
-  modal.innerHTML = `
-    <style>
-      @keyframes fadeInModal{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
-      .modal-box{background:#192030;border:1px solid rgba(255,255,255,0.09);border-radius:8px;max-width:780px;width:100%;display:grid;grid-template-columns:1fr 1fr;overflow:hidden;max-height:90vh}
-      .modal-img{background:#131928;overflow:hidden}
-      .modal-img img{width:100%;height:100%;object-fit:cover;display:block}
-      .modal-body{padding:36px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
-      .modal-league{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#3D6FD4}
-      .modal-title{font-family:'Inter',sans-serif;font-size:1.05rem;font-weight:500;color:#F0EFE8;line-height:1.4}
-      .modal-price{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:1px;color:#F0EFE8}
-      .modal-price sub{font-family:'Barlow',sans-serif;font-size:0.7rem;color:rgba(240,239,232,0.4);margin-left:3px}
-      .size-label{font-family:'Barlow Condensed',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(240,239,232,0.5);margin-top:8px}
-      .size-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-      .size-btn{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:600;letter-spacing:1px;width:48px;height:48px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(240,239,232,0.6);cursor:pointer;border-radius:4px;transition:all 0.15s}
-      .size-btn:hover{border-color:#3D6FD4;color:#F0EFE8}
-      .size-btn.selected{border-color:#3D6FD4;background:#3D6FD4;color:#fff}
-      .modal-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-      .btn-cart{font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:#3D6FD4;color:#fff;border:none;padding:15px;border-radius:4px;cursor:pointer;transition:all 0.2s;width:100%}
-      .btn-cart:hover{background:#2055B8;transform:translateY(-2px)}
-      .btn-cart:disabled{opacity:0.4;cursor:not-allowed;transform:none}
-      .btn-view{font-family:'Barlow Condensed',sans-serif;font-size:0.8rem;font-weight:400;letter-spacing:2px;text-transform:uppercase;background:transparent;color:rgba(240,239,232,0.5);border:1px solid rgba(255,255,255,0.1);padding:12px;border-radius:4px;cursor:pointer;transition:all 0.2s;width:100%;text-decoration:none;display:block;text-align:center}
-      .btn-view:hover{border-color:rgba(255,255,255,0.3);color:#F0EFE8}
-      .modal-close{position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.08);border:none;color:#F0EFE8;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background 0.15s}
-      .modal-close:hover{background:rgba(255,255,255,0.18)}
-      .size-note{font-size:0.72rem;color:rgba(240,239,232,0.35);font-family:'Inter',sans-serif}
-      @media(max-width:600px){.modal-box{grid-template-columns:1fr}.modal-img{max-height:240px}.modal-body{padding:24px 20px}}
-    </style>
-    <div class="modal-box" id="modalBox">
-      <div class="modal-img"><img src="${p.img}" alt="${p.title}"></div>
-      <div class="modal-body">
-        <div class="modal-league">${p.league}</div>
-        <div class="modal-title">${p.title}</div>
-        <div class="modal-price">$${p.price}<sub>USD</sub></div>
-        <div class="size-label">Select size</div>
-        <div class="size-grid">
-          ${sizes.map(s => `<button class="size-btn" onclick="selectSize(this,'${s}')">${s}</button>`).join('')}
-        </div>
-        <div class="size-note">Not sure? Most customers order their normal size.</div>
-        <div class="modal-actions">
-          <button class="btn-cart" id="buyBtn" disabled onclick="buyNow('${handle}')">Select a size to continue</button>
-          <a class="btn-view" href="https://kitspark-dxb.myshopify.com/products/${handle}" target="_blank">View full details ↗</a>
-        </div>
-      </div>
-    </div>
-    <button class="modal-close" onclick="closeModal()" style="position:fixed;top:20px;right:20px">✕</button>
-  `;
-  document.body.appendChild(modal);
-  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
-  document.addEventListener('keydown', escHandler);
-  window._selectedSize = null;
+  // Open Shopify product page in a modal-style overlay
+  const url = 'https://1hskg9-5a.myshopify.com/products/' + handle;
+  window.open(url, '_blank');
 }
-
-function selectSize(btn, size) {
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  window._selectedSize = size;
-  const buyBtn = document.getElementById('buyBtn');
-  buyBtn.disabled = false;
-  buyBtn.textContent = 'Buy Now — $' + allProducts.find(p => p.handle === document.querySelector('#productModal .btn-view').href.split('/products/')[1].split('?')[0])?.price + ' USD';
-}
-
-function buyNow(handle) {
-  if (!window._selectedSize) return;
-  const url = `https://kitspark-dxb.myshopify.com/products/${handle}?variant=&size=${window._selectedSize}`;
-  // Go to Shopify product page with size pre-selected
-  window.open(`https://kitspark-dxb.myshopify.com/products/${handle}`, '_blank');
-  closeModal();
-}
-
-function closeModal() {
-  const m = document.getElementById('productModal');
-  if (m) m.remove();
-  document.removeEventListener('keydown', escHandler);
-  window._selectedSize = null;
-}
-
-function escHandler(e) { if (e.key === 'Escape') closeModal(); }
 
 
 /* ── SEARCH ── */
